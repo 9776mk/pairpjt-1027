@@ -12,5 +12,28 @@
     <a href="{% url 'accounts:login' %}" class='btn'>로그인</a>
     <a href="{% url 'accounts:signup' %}" class='btn'>회원가입</a>
     {% endif %}
+    <div>
+        <h1>유저 목록</h1>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">닉네임</th>
+                <th scope="col">이름</th>
+                <th scope="col">이메일</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for u in user %}
+              <tr onclick='location.href="{% url 'accounts:detail' u.pk %}"' style='cursor:pointer'>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ u.username }}</td>
+                <td>{{ u.last_name }}{{ u.first_name }}</td>
+                <td>{{ u.email }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+    </div>
 </div>
 {% endblock %}
