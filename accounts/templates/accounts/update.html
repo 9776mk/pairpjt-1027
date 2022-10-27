@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block body %}
+<div class="container">
+    <h1 class='text-center'> {{ request.user }}님 업데이트 페이지 </h1>
+    <form action="{% url 'accounts:update' %}" method='POST'>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" value="업데이트" class="btn">
+        <a href="{% url 'accounts:password' %}" class="btn">비밀번호수정</a>
+        <a href="{% url 'accounts:delete' %}" class="btn">계정삭제</a>
+
+    </form>
+</div>
+{% endblock %}
+
