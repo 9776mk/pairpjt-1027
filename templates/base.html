@@ -68,10 +68,13 @@
 <body>
     <!-- Side navigation -->
   <div class="sidenav pt-0">
-    <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category" class='ps-3 py-3'>
     <a href="{% url 'articles:index' %}" class='py-3'>HOME</a>
+    <form action="{% url 'articles:search' %}" role='search' class='mb-0'>
+      <input type="search" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category" class='ps-3 py-3' name='search'>
+    </form>
+    <a href="{% url 'accounts:index' %}" class='py-3'>회원목록</a>
     {% if request.user.is_authenticated %}
-    <a href="{% url 'accounts:detail' request.user.pk %}">{{ request.user }}</a>
+    <a href="{% url 'accounts:detail' request.user.pk %}" class='py-3'>{{ request.user }}</a>
     <a href="{% url 'accounts:logout' %}" class='py-3'>Logout</a>
     {% else %}
     <a href="{% url 'accounts:login' %}" class='py-3'>Login</a>
