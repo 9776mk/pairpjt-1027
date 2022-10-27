@@ -128,8 +128,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
-STATIC_DIR = BASE_DIR / "static"
+# 루트 사용용
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Media files (user uploaded filed)
+
+MEDIA_ROOT = BASE_DIR
+MEDIA_URL = '/media/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
