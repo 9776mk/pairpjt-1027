@@ -18,6 +18,8 @@ def index(request):
     return render(request, "accounts/index.html", context)
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('articles:index')
     if request.method=='POST':
         form = SignupForm(request.POST)
         if form.is_valid():
