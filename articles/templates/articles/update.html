@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load django_bootstrap5 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<h1> 생성 화면 </h1>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% bootstrap_form form %}
+
+    {% bootstrap_button "저장" button_type="submit" button_class="btn-primary" %}
+</form>
+<a href="{% url 'articles:index' %}"><button type="button" class="btn btn-primary w-100 mt-5">목록으로</button>
+{% endblock%}
