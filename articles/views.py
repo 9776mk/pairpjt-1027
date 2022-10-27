@@ -66,3 +66,11 @@ def like(request, pk):
     # 상세 페이지로 redirect
     return redirect('articles:detail', pk)
     
+def search(request):
+    search = request.GET.get('search')
+    reviews = Review.objects.filter(title__contains=search) | Review.objects.filter(content__contains=search) | Review.objects.filter(movie_name__contains=search)
+    context = {
+        'search' : search,
+        'reviews' : reviews,
+    }
+    return render(request, 'articles/search.html', context)
