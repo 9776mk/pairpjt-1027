@@ -69,6 +69,7 @@ def delete(request, pk):
     return redirect("articles:index")
 
 
+@login_required
 def like(request, pk):
     review = Review.objects.get(pk=pk)
 #로그인 한 유저가 좋아요를 눌렀다면
@@ -90,6 +91,7 @@ def search(request):
     }
     return render(request, 'articles/search.html', context)
 
+@login_required
 def comment_create(request,pk):
     review = Review.objects.get(pk=pk)
     comment_form = CommentForm(request.POST)
@@ -100,17 +102,23 @@ def comment_create(request,pk):
         comment.save()
     return redirect('articles:detail',review.pk)
 
+@login_required
 def comments_delete(request, review_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     comment.delete()
     return redirect('articles:detail', review_pk)
 
+@login_required
 def comments_update(request, review_pk, comment_pk):
+    article = Review.objects.get(pk=review_pk)
     comment = Comment.objects.get(pk=comment_pk)
     if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment,)
+        form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
-            form.save()
+            comment_update = form.save(commit=False)
+            comment_update.article = article
+            comment_update.user = request.user
+            comment_update.save()
             #return redirect('articles:index', review.pk)
             return redirect('articles:detail',review_pk)
     else:

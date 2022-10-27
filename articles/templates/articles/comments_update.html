@@ -2,11 +2,20 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-
-  <form action="{% url 'articles:comment_update' review comment.pk %}" method="POST">
-    {% csrf_token %}
-    {% bootstrap_form comment_form layout='inline'%}
-    {% bootstrap_button button_type="submit" content="등록" button_class="btn-primary" %}
-  </form>
-
+  <div class="container">
+    <h1 class='text-center fw-bold my-5'>댓글 수정 <b class='fw-light'>비동기 처리 확인하기</b></h1>
+    <form action="{% url 'articles:comments_update' review comment.pk %}" method="POST">
+      {% csrf_token %}
+      <div class="row gap-1 justify-content-center">
+        <div class="col-12 col-md-9 px-0">
+          {% bootstrap_form form layout='inline'%}
+        </div>
+        <div class="d-grid col-12 col-md-2  px-0">
+          {% bootstrap_button button_type="submit" content="댓글 등록" button_class="btn-primary" %}
+        </div>
+      </div>
+    </form>
+    
+</div>
 {% endblock %}
+
