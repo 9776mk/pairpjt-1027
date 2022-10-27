@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block body %}
+
+  <h1>리뷰 조회</h1>
+  <p>리뷰제목:{{ review.title }}</p>
+  <p>리뷰내용:{{ review.content }}</p>
+  <p>영화 제목:{{ review.movie_name }}</p>
+  <p>평점:{{ review.grade }}</p>
+  <div class=" d-flex justify-content-end">
+    <a href="" class="btn btn-primary">수정</a>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="삭제" class="btn btn-primary">
+    </form>
+  </div>
+
+{% endblock %}
