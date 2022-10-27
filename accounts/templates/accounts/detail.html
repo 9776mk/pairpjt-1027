@@ -3,13 +3,35 @@
 {% block body %}
 
 <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-9 row">
+            <h1 class='text-center my-5 fw-bold'> {{ user }} 페이지 </h1>
 
-    <h1> {{ user }} 페이지 </h1>
-    <p>닉네임 : {{ user.username }}</p>
-    <p>이메일 : {{ user.email }}</p>
-    <p>이름 : {{ user.last_name }}{{ user.first_name }}</p>
-    {% if user == request.user %}
-    <a href="{% url 'accounts:update' %}" class='btn'>회원 정보수정</a>
-    {% endif %}
+            <div class="col-6">
+                이미지
+            </div>
+            <div class="col-6">
+                <div class='d-flex align-content-center mb-3'>
+                    <p class='text-primary me-5 mb-0 py-1'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span></p>
+                    <p class='text-primary me-5 mb-0 py-1'>팔로잉 <span class='text-dark'>{{ user.followings.count }}</span></p>
+                    <div>
+                        {% if request.user != user %}
+                        {% if request.user in user.followers.all %}
+                        <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-primary py-1'>팔로우취소</a>
+                        {% else %}
+                        <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-primary py-1'>팔로우</a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                <p>닉네임 : {{ user.username }}</p>
+                <p>이메일 : {{ user.email }}</p>
+                <p>이름 : {{ user.last_name }}{{ user.first_name }}</p>
+                {% if user == request.user %}
+                <a href="{% url 'accounts:update' %}" class='btn btn-primary'>회원 정보수정</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

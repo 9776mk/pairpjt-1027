@@ -18,6 +18,7 @@ class Review(models.Model):
                                 format='JPEG',
                                 options={'quality': 80})
     image = models.ImageField(upload_to='images/', blank=True)
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_reviews')
 
 class Comment(models.Model):
     content = models.TextField()

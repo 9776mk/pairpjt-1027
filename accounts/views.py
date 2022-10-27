@@ -11,9 +11,15 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 # Create your views here.
 def index(request):
-    return render(request, "accounts/index.html")
+    user = User.objects.all()
+    context = {
+        'user' : user,
+    }
+    return render(request, "accounts/index.html", context)
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('articles:index')
     if request.method=='POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -82,3 +88,12 @@ def delete(request):
     request.user.delete()
     auth_logout(request)
     return redirect('accounts:index')
+
+def follow(request, pk):
+    user = User.objects.get(pk=pk)
+    me = request.user
+    if user in me.followings.all():
+        me.followings.remove(user)
+    else:
+        me.followings.add(user)
+    return redirect('accounts:detail', pk)

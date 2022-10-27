@@ -1,0 +1,8 @@
+.card-hover {
+  transition: all 0.2s linear;
+  background-color: black;
+}
+
+.card-hover:hover {
+  transform: scale(1.1);
+}

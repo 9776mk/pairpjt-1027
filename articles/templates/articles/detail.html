@@ -1,17 +1,41 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 {% block body %}
-
   <h1>리뷰 조회</h1>
   <p>리뷰제목:{{ review.title }}</p>
+  <p>작성자:{{ review.user }}</p>
   <p>리뷰내용:{{ review.content }}</p>
   <p>영화 제목:{{ review.movie_name }}</p>
   <p>평점:{{ review.grade }}</p>
-  <div class=" d-flex justify-content-end">
-    <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
-    <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
-    <a href="{% url 'articles:like' review.pk%}" class="btn btn-primary">좋아요</a>
+
+
+
+   <div class=" d-flex justify-content-end">
+
+    {% if review.user == request.user %}
+      <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
+      <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'articles:like' review.pk %}" class="btn btn-primary">
+      {% if request.user in review.like_users.all %}
+        좋아요 취소 <i class="bi bi-heart-fill"></i>
+      {% else %}  
+       좋아요 <i class="bi bi-heart"></i>
+     {% endif %}
+    </a> <span> 좋아요 수 : {{ review.like_users.count }}</span>
+    {% else %}
+    <i class="bi bi-heart-fill like-heart"></i>
+    <span> 좋아요 수 : {{ review.like_users.count }}</span>
+    <br>
+    <span> 로그인 하세요</span>
+    {% endif%}
+
+
+
   </div>
   <form action="{% url 'articles:comment_create' review.pk %}" method="POST">
     {% csrf_token %}

@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
 
+{% load static%}
+
 {% block body %}
 
-  <div>
-    <h1>
-      Review Page
-    </h1>
-    <table class='table'>
-      <thead>
-        <tr>
-          <th scope='col'>Review title</th>
-          <th scope='col'>Movie name</th>
-          <th scope='col'>Grade</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for review in reviews %}
-          <tr>
-            <td>
-              <a href="{% url 'articles:detail' review.pk %}">{{ review.title }}</a>
-            </td>
-            <td>{{ review.movie_name }}</td>
-            <td>{{ review.grade }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
 
-      <a href="{% url 'articles:create' %}">새글쓰기</a>
+<div class="container">
+  <h1> 리뷰 목록 </h1>
+  <a href="{% url 'articles:create' %}" class="btn btn-primary">글쓰기</a>
+  {% if reviews %}
+  {% else %}
+    <h1> 글이 없습니다. 작성해 주세요.  </h1>
+  {% endif %}
 
-    </table>
+  <div class="row">
+    {% for review in reviews %}
+    <div class="col-3 my-3">
+      <a href="{% url 'articles:detail' review.pk %}" class="text-decoration-none text-black">
+        <div class="card shadow p-3 mb-5 bg-body rounded card-hover">
+          {% if review.image %}
+            <img src="{{ review.thumbnail.url }}">
+          {% else %}
+            <img src="{% static 'images/no_image.png' %}" class="card-img-top">
+          {% endif %}
+          <div class="card-body">
+            <p class="card-title my-1 fs-2">{{ review.title }}</p>
+            <p class="bi bi-star-fill text-warning"> {{ review.grade }}</p>
+            <p class="my-1 fs-3"> {{ review.user.username }} </p> 
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
   </div>
+</div>
 {% endblock %}
