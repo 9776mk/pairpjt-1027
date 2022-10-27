@@ -8,9 +8,41 @@
   <p>리뷰내용:{{ review.content }}</p>
   <p>영화 제목:{{ review.movie_name }}</p>
   <p>평점:{{ review.grade }}</p>
-   <div class=" d-flex justify-content-end">
+  <div class=" d-flex justify-content-end">
     <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
     <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
     <a href="{% url 'articles:like' review.pk%}" class="btn btn-primary">좋아요</a>
   </div>
+  <form action="{% url 'articles:comment_create' review.pk %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form comment_form layout='inline'%}
+    {% bootstrap_button button_type="submit" content="등록" button_class="btn-primary" %}
+  </form>
+
+  <table class='table'>
+    <thead>
+      <tr>
+        <th scope='col'>User</th>
+        <th scope='col'>Comment</th>
+        <th scope='col'>수정</th>
+        <th scope='col'>삭제</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for comment in comments %}
+        <tr>
+          <td>{{ comment.user.username }}</td>
+          <td>{{ comment.content }}</td>
+          <td>
+            <a href="{% url 'articles:comments_update' review.pk comment.pk %}" class="btn btn-primary">수정</a>
+          </td>
+          <td>
+            <a href="{% url 'articles:comments_delete' review.pk comment.pk %}" class="btn btn-danger">삭제</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
 {% endblock %}
