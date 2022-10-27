@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load static %}
 
 {% block body %}
   <h1>리뷰 조회</h1>
@@ -15,7 +16,6 @@
       <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
     {% endif %}
 
-
     {% if request.user.is_authenticated %}
     <a href="{% url 'articles:like' review.pk %}" class="btn btn-primary">
       {% if request.user in review.like_users.all %}
@@ -29,7 +29,6 @@
     <span> 좋아요 수 : {{ review.like_users.count }}</span>
     <br>
     <span> 로그인 하세요</span>
-
     {% endif%}
 
 
