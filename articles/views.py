@@ -4,9 +4,13 @@ from .forms import ReviewForm
 
 # Create your views here.
 def index(request):
-    reviews = Review.objects.order_by("-id")
-    context = {"reviews": reviews}
+    reviews =  Review.objects.all()
+    context={
+        'reviews':reviews
+    }
     return render(request, "articles/index.html", context)
+
+ 
 
 def create(request):
     if request.method == "POST":
@@ -20,9 +24,11 @@ def create(request):
             return redirect("articles:index")
     else:
         review_form = ReviewForm()
-    context = {"review_form": review_form}
+    context = {
+      "review_form": review_form
+    }
     return render(request, "articles/create.html", context=context)
-
+    
 def update(request, pk):
     review = Review.objects.get(pk=pk)
     if request.method == 'POST':
@@ -46,14 +52,10 @@ def detail(request, pk):
     }
     return render(request, 'articles/detail.html', context)
 
-
 def delete(request, pk):
     review = Review.objects.get(pk=pk)
     review.delete()
     return redirect("articles:index")
-
-
-
 
 def like(request, pk):
     review = Review.objects.get(pk=pk)
@@ -66,4 +68,3 @@ def like(request, pk):
     #     review.like_users.add(request.user)
     # # 상세 페이지로 redirect
     return redirect('articles:detail', pk)
-    

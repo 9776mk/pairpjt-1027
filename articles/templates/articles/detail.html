@@ -2,11 +2,15 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-  <p>{{ review.pk }}번 게시글</p>
-  <p> 제목 : {{ review.title }}</p>
-  <p> 내용 : {{ review.content }}</p>
-  <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
-  <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
-  <a href="{% url 'articles:like' review.pk%}" class="btn btn-primary">좋아요</a>
 
+  <h1>리뷰 조회</h1>
+  <p>리뷰제목:{{ review.title }}</p>
+  <p>리뷰내용:{{ review.content }}</p>
+  <p>영화 제목:{{ review.movie_name }}</p>
+  <p>평점:{{ review.grade }}</p>
+   <div class=" d-flex justify-content-end">
+    <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
+    <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
+    <a href="{% url 'articles:like' review.pk%}" class="btn btn-primary">좋아요</a>
+  </div>
 {% endblock %}
