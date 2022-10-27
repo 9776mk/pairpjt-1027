@@ -9,15 +9,19 @@
             이미지
         </div>
         <div class="col-6">
-            <p class='text-primary'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span> 팔로잉 <span class='text-dark'>{{ user.followings.count }}</span>
-                {% if request.user != user %}
+            <div class='d-flex align-content-center mb-3'>
+                <p class='text-primary me-5 mb-0 py-1'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span></p>
+                <p class='text-primary me-5 mb-0 py-1'>팔로잉 <span class='text-dark'>{{ user.followings.count }}</span></p>
+                <div>
+                    {% if request.user != user %}
                     {% if request.user in user.followers.all %}
-                    <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-primary'>팔로우취소</a>
+                    <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-primary py-1'>팔로우취소</a>
                     {% else %}
-                    <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-primary'>팔로우</a>
+                    <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-primary py-1'>팔로우</a>
                     {% endif %}
-                {% endif %}
-            </p>
+                    {% endif %}
+                </div>
+            </div>
             <p>닉네임 : {{ user.username }}</p>
             <p>이메일 : {{ user.email }}</p>
             <p>이름 : {{ user.last_name }}{{ user.first_name }}</p>
