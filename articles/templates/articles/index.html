@@ -6,22 +6,27 @@
 
 
 <div class="container">
-  <h1> 리뷰 목록 </h1>
-  <a href="{% url 'articles:create' %}" class="btn btn-primary">글쓰기</a>
-  {% if reviews %}
-  {% else %}
-    <h1> 글이 없습니다. 작성해 주세요.  </h1>
-  {% endif %}
+  <div class="row justify-content-center">
+    <div class="col-11">
 
-  <div class="row">
-    {% for review in reviews %}
+      <h1 class='text-center fw-bold my-5'> 리뷰 목록 </h1>
+      <div class='text-end'>
+        <a href="{% url 'articles:create' %}" class="btn btn-primary">글쓰기</a>
+      </div>
+      {% if reviews %}
+      {% else %}
+      <h1> 글이 없습니다. 작성해 주세요.  </h1>
+      {% endif %}
+      
+      <div class="row">
+        {% for review in reviews %}
     <div class="col-3 my-3">
       <a href="{% url 'articles:detail' review.pk %}" class="text-decoration-none text-black">
         <div class="card shadow p-3 mb-5 bg-body rounded card-hover">
           {% if review.image %}
             <img src="{{ review.thumbnail.url }}">
           {% else %}
-            <img src="{% static 'images/no_image.png' %}" class="card-img-top">
+          <img src="{% static 'images/no_image.png' %}" class="card-img-top">
           {% endif %}
           <div class="card-body">
             <p class="card-title my-1 fs-2">{{ review.title }}</p>
@@ -31,6 +36,8 @@
         </div>
       </a>
     </div>
+  </div>
+</div>
     {% endfor %}
   </div>
 </div>
