@@ -12,7 +12,7 @@ class Review(models.Model):
     grade = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     thumbnail = ProcessedImageField(upload_to='images/', blank=True,
                                 processors=[ResizeToFill(1200, 960)],
                                 format='JPEG',
@@ -22,4 +22,4 @@ class Review(models.Model):
 class Comment(models.Model):
     content = models.TextField()
     article = models.ForeignKey(Review, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

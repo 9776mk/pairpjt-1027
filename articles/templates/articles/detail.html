@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block body %}
+  <p>{{ review.pk }}번 게시글</p>
+  <p> 제목 : {{ review.title }}</p>
+  <p> 내용 : {{ review.content }}</p>
+  <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
+  <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
+  <a href="{% url 'articles:like' review.pk%}" class="btn btn-primary">좋아요</a>
+
+{% endblock %}
