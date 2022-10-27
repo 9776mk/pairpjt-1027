@@ -2,10 +2,32 @@
 
 {% block body %}
 
-  <h1>
-    index 페이지
-  </h1>
+  <div>
+    <h1>
+      Review Page
+    </h1>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>Review title</th>
+          <th scope='col'>Movie name</th>
+          <th scope='col'>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in reviews %}
+          <tr>
+            <td>
+              <a href="{% url 'articles:detail' review.pk %}">{{ review.title }}</a>
+            </td>
+            <td>{{ review.movie_name }}</td>
+            <td>{{ review.grade }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
 
-  <a href="{% url 'articles:create' %}">새글쓰기</a>
+      <a href="{% url 'articles:create' %}">새글쓰기</a>
 
+    </table>
+  </div>
 {% endblock %}
