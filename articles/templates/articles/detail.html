@@ -21,26 +21,19 @@
           {% endif %}
 
           {% if request.user.is_authenticated %}
-            <a href="{% url 'articles:like' review.pk %}" class="btn btn-primary">
+            <btn class="btn btn-outline-dark" data-article-id="{{ review.pk }}">
               {% if request.user in review.like_users.all %}
-                좋아요 취소
-                <i id="like-btn" class="bi bi-heart-fill"></i>
+                <i id="like-btn" data-article-id="{{ review.pk }}" class="bi bi-heart-fill"></i>
+
               {% else %}
-                좋아요
-                <i id="like-btn" class="bi bi-heart"></i>
+                <i id="like-btn" data-article-id="{{ review.pk }}" class="bi bi-heart"></i>
               {% endif %}
-            </a>
-            <btn class='btn btn-light'>
-              좋아요
-              {{ review.like_users.count }}</btn>
+              <span id="like-count">{{ review.like_users.count }}</span>
+
+            </btn>
           {% else %}
-            <i class="bi bi-heart-fill like-heart"></i>
-            <span>
-              좋아요 수 :
-              {{ review.like_users.count }}</span>
-            <br>
-            <span>
-              로그인 하세요</span>
+            <i class="bi bi-heart-fill like-heart">
+              {{ review.like_users.count }}</i>
             {% endif%}
           </div>
           <form action="{% url 'articles:comment_create' review.pk %}" method="POST" class='my-3'>
@@ -86,7 +79,39 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+      // (1) 좋아요 버튼
       const likeBtn = document.querySelector('#like-btn')
-      likebtn.addEventListener('click', function () {})
+      // (2) 좋아요 버튼을 클릭하면, 함수 실행
+      likeBtn.addEventListener('click', function (event) {
+        // 서버로 비동기 요청을 하고 싶음
+        console.log(event.target.dataset)
+        axios({method: 'get', url: `/articles/${event.target.dataset.articleId}/like/`}).then(response => {
+          console.log(response)
+          console.log(response.data)
+          // event.target.classList.toggle('bi-heart')
+          // event.target.classList.toggle('bi-heart-fill')
+          if (response.data.isLiked === true) {
+            event
+              .target
+              .classList
+              .add('bi-heart-fill')
+            event
+              .target
+              .classList
+              .remove('bi-heart')
+          } else {
+            event
+              .target
+              .classList
+              .add('bi-heart')
+            event
+              .target
+              .classList
+              .remove('bi-heart-fill')
+          }
+          const likeCount = document.querySelector('#like-count')
+          likeCount.innerText = response.data.likeCount
+        })
+      })
     </script>
   {% endblock %}
