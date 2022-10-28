@@ -4,38 +4,47 @@
 
 {% block body %}
 <div class="container">
-<div class='row justify-content-center'>
-  <div class="col-11">
-    <h1 class='text-center fw-bold mt-4 mb-5'>리뷰 조회</h1>
-    <p>리뷰제목:{{ review.title }}</p>
-    <p>작성자:{{ review.user }}</p>
-    <p>리뷰내용:{{ review.content }}</p>
-    <p>영화 제목:{{ review.movie_name }}</p>
-    <p>평점:{{ review.grade }}</p>
-    
-    
+  <div class='row justify-content-center'>
+    <div class="col-12">
+      <h1 class='text-center fw-bold mt-4 mb-5'>리뷰 조회</h1>
+      <div class="mb-1 fs-5 fw-bold "> 
+        <a href="{% url 'accounts:detail' review.user.pk %}" class="text-decoration-none text-black">
+          <img src="..." class="img-fluid">
+          {{ review.user }}
+        </a>
+      </div>
+
+      <div> 
+        <span class="fs-4"> {{ review.movie_name }} </span>
+        <span class="card text-center" style="width: 3rem;"> <i class="bi bi-star-fill"> {{ review.grade }} </i></span>
+      </div>
+      <hr>
+      <div> 
+        <span class="fs-4 fw-bold mb-0"> {{ review.title }} </span>
+        <br>
+        <span> {{ review.content }} </span>
+      </div>
+    </div>
+
     
     <div class=" d-flex justify-content-end gap-2 align-content-center my-4">
-      
       {% if review.user == request.user %}
-    <a href="{% url 'articles:delete' review.pk %}" class="btn btn-warning">삭제</a>
-    <a href="{% url 'articles:update' review.pk %}" class="btn btn-danger">수정</a>
+    <a href="{% url 'articles:delete' review.pk %}" class="btn btn-outline-dark">삭제</a>
+    <a href="{% url 'articles:update' review.pk %}" class="btn btn-outline-dark">수정</a>
     {% endif %}
     
     {% if request.user.is_authenticated %}
-    <a href="{% url 'articles:like' review.pk %}" class="btn btn-primary">
+    <a href="{% url 'articles:like' review.pk %}" class="btn btn-outline-dark">
       {% if request.user in review.like_users.all %}
-      좋아요 취소 <i class="bi bi-heart-fill"></i>
+      <i class="bi bi-heart-fill"></i> {{ review.like_users.count }}
       {% else %}  
-       좋아요 <i class="bi bi-heart"></i>
+      <i class="bi bi-heart"> {{ review.like_users.count }}</i>
      {% endif %}
-    </a> <btn class='btn btn-light'> 좋아요 {{ review.like_users.count }}</btn>
+    </a>
     {% else %}
-    <i class="bi bi-heart-fill like-heart"></i>
-    <span> 좋아요 수 : {{ review.like_users.count }}</span>
-    <br>
-    <span> 로그인 하세요</span>
+    <i class="bi bi-heart-fill like-heart"> {{ review.like_users.count }}</i>
     {% endif%}
+
   </div>
   <form action="{% url 'articles:comment_create' review.pk %}" method="POST" class='my-3'>
     {% csrf_token %}
@@ -44,39 +53,42 @@
         {% bootstrap_form comment_form layout='inline'%}
       </div>
       <div class="d-grid col-12 col-md-2  px-0">
-        {% bootstrap_button button_type="submit" content="등록" button_class="btn-primary" %}
+        {% bootstrap_button button_type="submit" content="등록" button_class="btn btn-outline-dark" %}
       </div>
     </div>
   </form>
   
-  <table class='table'>
-    <thead>
-      <tr>
-        <th scope='col'>User</th>
-        <th scope='col'>Comment</th>
-        <th scope='col'>수정</th>
-        <th scope='col'>삭제</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-      {% for comment in comments %}
-      <tr>
-        <td>{{ comment.user.username }}</td>
-        <td>{{ comment.content }}</td>
-        <td>
-          <a href="{% url 'articles:comments_update' review.pk comment.pk %}" class="btn btn-primary">수정</a>
-        </td>
-        <td>
-          <a href="{% url 'articles:comments_delete' review.pk comment.pk %}" class="btn btn-danger">삭제</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
 
-  </table>
+  {% if comments %}
+    <table class='table'>
+      <thead>
+        <tr>
+          <th scope='col'>User</th>
+          <th scope='col'>Comment</th>
+          <th scope='col'>수정</th>
+          <th scope='col'>삭제</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for comment in comments %}
+        <tr>
+          <td>{{ comment.user.username }}</td>
+          <td>{{ comment.content }}</td>
+          <td>
+            <a href="{% url 'articles:comments_update' review.pk comment.pk %}" class="btn btn-outline-dark">수정</a>
+          </td>
+          <td>
+            <a href="{% url 'articles:comments_delete' review.pk comment.pk %}" class="btn btn-outline-dark">삭제</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div> 댓글이 없습니다. </div>
+  {% endif %}
+  
 </div>
-</div>
-</div>
+
   {% endblock %}
   
