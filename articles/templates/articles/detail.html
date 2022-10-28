@@ -31,7 +31,6 @@
       </div>
     </div>
 
-    
     <div class=" d-flex justify-content-end gap-2 align-content-center my-4">
       {% if review.user == request.user %}
     <a href="{% url 'articles:delete' review.pk %}" class="btn btn-outline-dark">삭제</a>
@@ -80,7 +79,9 @@
           <td><img src="{{ comment.user.profile.image.url }}" alt="{{ u.profile.image.url }}" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
           <td>{{ comment.content }}</td>
           {% else %}
-          <td><img src="{% static 'images/guest.png' %}" alt="" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
+
+          <td><img src="{% static 'images/guest.png' %}" alt="guest" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
+
           <td>{{ comment.content }}</td>
           {% endif %}
           <td>

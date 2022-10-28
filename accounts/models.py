@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
-    image = ProcessedImageField(
+    image = ProcessedImageField(upload_to='images/',
         blank=True,
         processors=[Thumbnail(200, 300)],
         format='JPEG',
