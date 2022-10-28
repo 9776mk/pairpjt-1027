@@ -31,7 +31,13 @@
               <div class="card-body">
                 <p class="card-title my-1 fs-2">{{ review.title }}</p>
                 <p class="bi bi-star-fill"> {{ review.grade }}</p>
-                <p class="my-1 fs-3"> {{ review.user.username }} </p> 
+                <p class="my-1 fs-3"> 
+                  {% if review.user.profile.image %}
+                  <img src="{{ review.user.profile.image.url }}" alt="{{ u.profile.image.url }}" style='width:2rem;' class='rounded-3 me-1'>
+                  {% else %}
+                  <img src="{% static 'images/guest.png' %}" alt="guest" style='width:2rem;' class='rounded-3 me-1'>
+                  {% endif %}
+                  {{ review.user.username }} </p> 
               </div>
             </div>
           </a>
