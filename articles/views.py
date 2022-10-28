@@ -56,12 +56,7 @@ def detail(request, pk):
         'comment_form' : comment_form,
     }
     return render(request, 'articles/detail.html', context)
-
-
-
-
-
-
+    
 @login_required
 def delete(request, pk):
     review = Review.objects.get(pk=pk)

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block body %}
 
 <div class="container">
@@ -16,15 +16,35 @@
               <tr>
                 <th scope="col"></th>
                 <th scope="col">닉네임</th>
+                <th scope="col">상태메세지</th>
                 <th scope="col">이름</th>
                 <th scope="col">이메일</th>
             </tr>
         </thead>
         <tbody>
+            <colgroup>
+                <col style='width:5%'>
+                <col style='width:20%'>
+                <col style='width:50%'>
+                <col style='width:10%'>
+                <col style='width:15%'>
+            </colgroup>
             {% for u in user %}
             <tr onclick='location.href="{% url 'accounts:detail' u.pk %}"' style='cursor:pointer'>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ u.username }}</td>
+                <td>
+                    {% if u.profile.image %}
+                    <img src="{{ u.profile.image.url }}" alt="{{ u.profile.image.url }}" style='width:2rem;' class='rounded-3 me-3'>
+                    {% else %}
+                    <img src="{% static 'images/guest.png' %}" alt="guest" style='width:2rem;' class='rounded-1 me-3'>
+                    {% endif %}
+                    {{ u.username }}</td>
+                <td>
+                    {% if u.profile.status_message %}
+                    <span class='fw-bold'>{{ u.profile.status_message }}</span>
+                    {% else %}
+                    {% endif %}
+                </td>
                 <td>{{ u.last_name }}{{ u.first_name }}</td>
                 <td>{{ u.email }}</td>
             </tr>

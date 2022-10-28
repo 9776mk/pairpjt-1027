@@ -68,18 +68,25 @@
 <body>
     <!-- Side navigation -->
   <div class="sidenav pt-0">
-    <a href="{% url 'articles:index' %}" class='py-3'>HOME</a>
-    <form action="{% url 'articles:search' %}" role='search' class='mb-0'>
-      <input type="search" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category" class='ps-3 py-3' name='search'>
-    </form>
-    <a href="{% url 'accounts:index' %}" class='py-3'>회원목록</a>
     {% if request.user.is_authenticated %}
-    <a href="{% url 'accounts:detail' request.user.pk %}" class='py-3'>{{ request.user }}</a>
+    <a href="{% url 'accounts:detail' request.user.pk %}" class='py-3'>
+      {% if request.user.profile.image %}
+      <img src="{{ request.user.profile.image.url }}" alt="{{ request.user.profile.image }}" style='width:2rem;'>
+      {% else %}
+      <img src="{% static 'images/guest.jpg' %}" alt="guest" style='width:2rem;'>
+      {% endif %}
+      {{ request.user }}
+    </a>
     <a href="{% url 'accounts:logout' %}" class='py-3'>Logout</a>
     {% else %}
     <a href="{% url 'accounts:login' %}" class='py-3'>Login</a>
     <a href="{% url 'accounts:signup' %}" class='py-3'>Signup</a>
     {% endif %}
+    <form action="{% url 'articles:search' %}" role='search' class='mb-0'>
+      <input type="search" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category" class='ps-3 py-3' name='search'>
+    </form>
+    <a href="{% url 'articles:index' %}" class='py-3'>HOME</a>
+    <a href="{% url 'accounts:index' %}" class='py-3'>회원목록</a>
   </div>
 
   <!-- Page content -->
