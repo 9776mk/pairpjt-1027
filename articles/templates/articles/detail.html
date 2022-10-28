@@ -63,7 +63,7 @@
   </form>
   
   {% if comments %}
-    <table class='table'>
+    <table class='table align-middle'>
       <thead>
         <tr>
           <th scope='col'>User</th>
@@ -79,7 +79,9 @@
           <td><img src="{{ comment.user.profile.image.url }}" alt="{{ u.profile.image.url }}" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
           <td>{{ comment.content }}</td>
           {% else %}
+
           <td><img src="{% static 'images/guest.png' %}" alt="guest" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
+
           <td>{{ comment.content }}</td>
           {% endif %}
           <td>
