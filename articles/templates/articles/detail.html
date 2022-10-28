@@ -8,9 +8,13 @@
   <div class='row justify-content-center'>
     <div class="col-12">
       <h1 class='text-center fw-bold mt-4 mb-5'>리뷰 조회</h1>
-      <div class="mb-1 fs-5 fw-bold "> 
+      <div class="mb-1 fs-4 fw-bold "> 
         <a href="{% url 'accounts:detail' review.user.pk %}" class="text-decoration-none text-black">
-          <img src="..." class="img-fluid">
+          {% if review.user.profile.image %}
+          <img src="{{ review.user.profile.image.url }}" alt="{{ u.profile.image.url }}" style='width:2rem;' class='rounded-3 me-1'>
+          {% else %}
+          <img src="{% static 'images/guest.png' %}" alt="guest" style='width:2rem;' class='rounded-3 me-1'>
+          {% endif %}
           {{ review.user }}
         </a>
       </div>
@@ -45,8 +49,8 @@
     {% else %}
     <i class="bi bi-heart-fill like-heart"> {{ review.like_users.count }}</i>
     {% endif%}
-
   </div>
+
   <form action="{% url 'articles:comment_create' review.pk %}" method="POST" class='my-3'>
     {% csrf_token %}
     <div class="d-flex justify-content-center gap-2">
@@ -59,9 +63,8 @@
     </div>
   </form>
   
-
   {% if comments %}
-    <table class='table'>
+    <table class='table align-middle'>
       <thead>
         <tr>
           <th scope='col'>User</th>
@@ -72,9 +75,14 @@
       </thead>
       <tbody>
         {% for comment in comments %}
-        <tr>
-          <td>{{ comment.user.username }}</td>
+        <tr class="align-middle">
+          {% if comment.user.profile.image %}
+          <td><img src="{{ comment.user.profile.image.url }}" alt="{{ u.profile.image.url }}" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
           <td>{{ comment.content }}</td>
+          {% else %}
+          <td><img src="{% static 'images/guest.png' %}" alt="" style='height:2rem;' class='rounded-3 me-1'> {{ comment.user.username }}</td>
+          <td>{{ comment.content }}</td>
+          {% endif %}
           <td>
             <a href="{% url 'articles:comments_update' review.pk comment.pk %}" class="btn btn-outline-dark">수정</a>
           </td>
