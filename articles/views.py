@@ -1,3 +1,4 @@
+from urllib import response
 from django.shortcuts import render, redirect
 
 from .models import Review, Comment
@@ -68,6 +69,7 @@ def delete(request, pk):
     review.delete()
     return redirect("articles:index")
 
+from django.http import JsonResponse
 
 @login_required
 def like(request, pk):
@@ -76,6 +78,7 @@ def like(request, pk):
     if request.user in review.like_users.all():
     # 좋아요 삭제
         review.like_users.remove(request.user)
+        is_liked = False
     else:
     # 좋아요 추가하고
         review.like_users.add(request.user)
