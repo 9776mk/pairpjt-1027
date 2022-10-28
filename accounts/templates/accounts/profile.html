@@ -6,7 +6,7 @@
     <form action="{% url 'accounts:profile' user.pk %}" method='POST' enctype='multipart/form-data'>
         {% csrf_token %}
         {% bootstrap_form form %}
-        <input type="submit" value="프로필 업데이트" class="btn btn-primary">
+        <input type="submit" value="프로필 업데이트" class="btn btn-outline-dark">
     </form>
 </div>
 {% endblock %}
