@@ -1,47 +1,53 @@
 {% extends 'base.html' %}
+
 {% load static %}
+
 {% block body %}
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-10 row">
-            <h1 class='text-center my-5 fw-bold'> {{ user }} 페이지 </h1>
-
-            <div class="col-12 col-md-6 mb-5">
-                {% if user.profile.image %}
-                <img src="{{ user.profile.image.url }}" alt="{{ user.profile.image }}" class='mb-2'>
-                {% else %}
-                <img src="{% static 'images/guest.png' %}" alt="no-profile-image" class='mb-2'>
-                {% endif %}
-                {% if user.profile.status_message %}
-                <p class='fw-bold'>{{ user.profile.status_message }}</p>
-                {% endif %}
-                {% if request.user == user %}
-                <div>
-                    <a href="{% url 'accounts:profile' request.user.pk %}" class='btn btn-primary'>프로필 업데이트</a>
-                </div>
-                {% endif %}
-            </div>
-            <div class="col-12 col-md-6">
-                <div class='d-flex align-content-center mb-3'>
-                    <p class='text-primary me-5 mb-0 py-1'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span></p>
-                    <p class='text-primary me-5 mb-0 py-1'>팔로잉 <span class='text-dark'>{{ user.followings.count }}</span></p>
+    <div class="justify-content-center">
+        <h1 class='text-center my-5 fw-bold'> {{ user }}님의 페이지 </h1>
+        <div class="row justify-content-center">
+            <div class="row col-9 justify-content-center my-0 mx-0 rounded-3 shadow p-1 mb-1" style="background-color:#e9e9e9;">
+                <div class="col-4 col-md-3 mx-3 my-1">
+                    {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="{{ user.profile.image }}" class='mb-2'>
+                    {% else %}
+                    <img src="{% static 'images/guest.png' %}" alt="no-profile-image" class='mb-2'>
+                    {% endif %}
+                    {% if user.profile.status_message %}
+                    <p class='fw-bold'>{{ user.profile.status_message }}</p>
+                    {% endif %}
+                    {% if request.user == user %}
                     <div>
-                        {% if request.user != user %}
-                        {% if request.user in user.followers.all %}
-                        <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-primary py-1'>팔로우취소</a>
-                        {% else %}
-                        <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-primary py-1'>팔로우</a>
-                        {% endif %}
-                        {% endif %}
+                        <a href="{% url 'accounts:profile' request.user.pk %}" class='btn btn-outline-dark'>프로필 업데이트</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-4 col-md-3 mx-3 my-1">
+                    <div class='d-flex align-content-center mb-3'>
+                        <p class='text-primary me-3 mb-0 py-1'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span></p>
+                        <p class='text-primary me-3 mb-0 py-1'>팔로잉 <span class='text-dark'>{{ user.followings.count }}</span></p>
+                        <div>
+                            {% if request.user != user %}
+                            {% if request.user in user.followers.all %}
+                            <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-dark py-1'>팔로우취소</a>
+                            {% else %}
+                            <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-dark py-1'>팔로우</a>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>
+                        <p>닉네임 : {{ user.username }}</p>
+                        <p>이메일 : {{ user.email }}</p>
+                        <p>이름 : {{ user.last_name }}{{ user.first_name }}</p>
+                        {% if user == request.user %}
+                        <a href="{% url 'accounts:update' %}" class='btn btn-outline-dark'>회원 정보수정</a>
+                    {% endif %}
                     </div>
                 </div>
-                <p>닉네임 : {{ user.username }}</p>
-                <p>이메일 : {{ user.email }}</p>
-                <p>이름 : {{ user.last_name }}{{ user.first_name }}</p>
-                {% if user == request.user %}
-                <a href="{% url 'accounts:update' %}" class='btn btn-primary'>회원 정보수정</a>
-                {% endif %}
+
             </div>
         </div>
     </div>

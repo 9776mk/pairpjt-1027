@@ -11,34 +11,40 @@
 
       <h1 class='text-center fw-bold my-5'> 리뷰 목록 </h1>
       <div class='text-end'>
-        <a href="{% url 'articles:create' %}" class="btn btn-primary">글쓰기</a>
+        <a href="{% url 'articles:create' %}" class="btn btn-outline-dark">글쓰기</a>
       </div>
       {% if reviews %}
       {% else %}
       <h1> 글이 없습니다. 작성해 주세요.  </h1>
       {% endif %}
-      
+
       <div class="row">
         {% for review in reviews %}
-    <div class="col-3 my-3">
-      <a href="{% url 'articles:detail' review.pk %}" class="text-decoration-none text-black">
-        <div class="card shadow p-3 mb-5 bg-body rounded card-hover">
-          {% if review.image %}
-            <img src="{{ review.thumbnail.url }}">
-          {% else %}
-          <img src="{% static 'images/no_image.png' %}" class="card-img-top">
-          {% endif %}
-          <div class="card-body">
-            <p class="card-title my-1 fs-2">{{ review.title }}</p>
-            <p class="bi bi-star-fill text-warning"> {{ review.grade }}</p>
-            <p class="my-1 fs-3"> {{ review.user.username }} </p> 
-          </div>
+        <div class="col-4 my-3">
+          <a href="{% url 'articles:detail' review.pk %}" class="text-decoration-none text-black">
+            <div class="card shadow p-3 mb-5 bg-body rounded card-hover">
+              {% if review.image %}
+                <img src="{{ review.thumbnail.url }}">
+              {% else %}
+              <img src="{% static 'images/no_image.png' %}" class="card-img-top">
+              {% endif %}
+              <div class="card-body">
+                <p class="card-title my-1 fs-2">{{ review.title }}</p>
+                <p class="bi bi-star-fill"> {{ review.grade }}</p>
+                <p class="my-1 fs-3"> 
+                  {% if review.user.profile.image %}
+                  <img src="{{ review.user.profile.image.url }}" alt="{{ u.profile.image.url }}" style='width:2rem;' class='rounded-3 me-1'>
+                  {% else %}
+                  <img src="{% static 'images/guest.png' %}" alt="guest" style='width:2rem;' class='rounded-3 me-1'>
+                  {% endif %}
+                  {{ review.user.username }} </p> 
+              </div>
+            </div>
+          </a>
         </div>
-      </a>
+        {% endfor %}
+      </div>
     </div>
-  </div>
-</div>
-    {% endfor %}
   </div>
 </div>
 {% endblock %}

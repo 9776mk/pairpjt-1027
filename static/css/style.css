@@ -6,3 +6,7 @@
 .card-hover:hover {
   transform: scale(1.1);
 }
+
+.nametag {
+  border: 1px;
+}
