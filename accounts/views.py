@@ -1,4 +1,5 @@
 import re
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from accounts.forms import ProfileForm, SignupForm, UpdateForm
@@ -94,13 +95,24 @@ def delete(request):
 
 @login_required
 def follow(request, pk):
-    user = User.objects.get(pk=pk)
-    me = request.user
-    if user in me.followings.all():
-        me.followings.remove(user)
-    else:
-        me.followings.add(user)
-    return redirect('accounts:detail', pk)
+    if request.user.is_authenticated:
+        user = User.objects.get(pk=pk)
+        me = request.user
+        if me != user:
+            if user.followers.filter(pk=me.pk).exists():
+                user.followers.remove(me)
+                is_followed = False
+            else:
+                user.followers.add(me)
+                is_followed = True
+            context = {
+                'is_followed' : is_followed,
+                'followersC' : user.followers.count(),
+                'followingsC' : user.followings.count(),
+            }
+            return JsonResponse(context)
+        return redirect('accounts:detail', pk)
+    return redirect('accounts:login')
 
 def profile(request, pk):
     user = get_user_model().objects.get(pk=pk)

@@ -24,21 +24,23 @@
                     </div>
                     {% endif %}
                 </div>
-                <div class="col-4 col-md-3 mx-3 my-1">
-                    <div class='d-flex align-content-center mb-3'>
-                        <p class='text-primary me-3 mb-0 py-1'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span></p>
-                        <p class='text-primary me-3 mb-0 py-1'>팔로잉 <span class='text-dark'>{{ user.followings.count }}</span></p>
-                        <div>
-                            {% if request.user != user %}
-                            {% if request.user in user.followers.all %}
-                            <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-dark py-1'>팔로우취소</a>
-                            {% else %}
-                            <a href="{% url 'accounts:follow' user.pk %}" class='btn btn-outline-dark py-1'>팔로우</a>
-                            {% endif %}
-                            {% endif %}
-                        </div>
-                    </div>
+            <div class="col-4 col-md-3 mx-3 my-1">
+                <div class='d-flex align-content-center mb-3'>
+                    <p class='text-primary me-3 mb-0 py-1'>팔로워 <span id='followers' class='text-dark'>{{ user.followers.count }}</span></p>
+                    <p class='text-primary me-3 mb-0 py-1'>팔로잉 <span id='followings'  class='text-dark'>{{ user.followings.count }}</span></p>
                     <div>
+                        {% if request.user.is_authenticated %}
+                        {% if request.user != user %}
+                        {% if request.user in user.followers.all %}
+                        <span id='follow' data-user-id='{{ user.pk }}' class='btn btn-outline-dark py-1'>팔로우취소</span>
+                        {% else %}
+                        <span id='follow' data-user-id='{{ user.pk }}' class='btn btn-outline-dark py-1'>팔로우</span>
+                        {% endif %}
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                  </div>
+                  <div>
                         <p>닉네임 : {{ user.username }}</p>
                         <p>이메일 : {{ user.email }}</p>
                         <p>이름 : {{ user.last_name }}{{ user.first_name }}</p>
@@ -47,9 +49,39 @@
                     {% endif %}
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+<script>
+    const followBtn = document.querySelector('#follow')
+    followBtn.addEventListener('click', function (event) {
+        console.log(event.target.dataset)
+        axios({
+            method: 'get',
+            url: `/accounts/follow/${event.target.dataset.userId}/`
+          })
+          .then(response => {
+                console.log(response)
+                console.log(response.data)
+                if ( response.data.is_followed === true ){
+                    event.target.classList.remove('btn-primary')
+                    event.target.classList.add('btn-outline-primary')
+                    followBtn.innerText = '팔로우취소'
+                } else{
+                    event.target.classList.remove('btn-outline-primary')
+                    event.target.classList.add('btn-primary')
+                    followBtn.innerText = '팔로우'
+                }
+                const followers = document.querySelector('#followers')
+                const followings = document.querySelector('#followings')
+                followers.innerText = response.data.followersC
+                followings.innerText = response.data.followingsC
+            })
+        })
+</script>
+{% endblock script %}

@@ -2,12 +2,18 @@
 {% load django_bootstrap5 %}
 {% block body %}
 <div class="container">
-    <h1 class='text-center'> accounts signup 페이지 </h1>
-    <form action="{% url 'accounts:signup' %}" method='POST'>
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="submit" value="회원가입" class="btn">
-    </form>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-9 col-lg-7 col-xl-6 col-xxl-5 my-5">
+            <h1 class='text-center fw-bold my-5'> Accounts Signup 페이지 </h1>
+            <form action="{% url 'accounts:signup' %}" method='POST'>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <div class="d-grid">
+                    <input type="submit" value="회원가입" class="btn btn-dark">
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

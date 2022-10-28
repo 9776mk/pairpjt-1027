@@ -5,7 +5,6 @@ from .forms import ReviewForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import articles
-from django.http import JsonResponse
 
 
 # Create your views here.
@@ -57,7 +56,12 @@ def detail(request, pk):
         'comment_form' : comment_form,
     }
     return render(request, 'articles/detail.html', context)
-    
+
+
+
+
+
+
 @login_required
 def delete(request, pk):
     review = Review.objects.get(pk=pk)
@@ -72,7 +76,6 @@ def like(request, pk):
     if request.user in review.like_users.all():
     # 좋아요 삭제
         review.like_users.remove(request.user)
-        is_liked = False
     else:
     # 좋아요 추가하고
         review.like_users.add(request.user)
