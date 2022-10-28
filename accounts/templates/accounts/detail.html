@@ -1,16 +1,28 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block body %}
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-9 row">
+        <div class="col-10 row">
             <h1 class='text-center my-5 fw-bold'> {{ user }} 페이지 </h1>
 
-            <div class="col-6">
-                이미지
+            <div class="col-12 col-md-6 mb-5">
+                {% if user.profile.image %}
+                <img src="{{ user.profile.image.url }}" alt="{{ user.profile.image }}" class='mb-2'>
+                {% else %}
+                <img src="{% static 'images/guest.png' %}" alt="no-profile-image" class='mb-2'>
+                {% endif %}
+                {% if user.profile.status_message %}
+                <p class='fw-bold'>{{ user.profile.status_message }}</p>
+                {% endif %}
+                {% if request.user == user %}
+                <div>
+                    <a href="{% url 'accounts:profile' request.user.pk %}" class='btn btn-primary'>프로필 업데이트</a>
+                </div>
+                {% endif %}
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6">
                 <div class='d-flex align-content-center mb-3'>
                     <p class='text-primary me-5 mb-0 py-1'>팔로워 <span class='text-dark'>{{ user.followers.count }}</span></p>
                     <p class='text-primary me-5 mb-0 py-1'>팔로잉 <span class='text-dark'>{{ user.followings.count }}</span></p>
