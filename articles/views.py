@@ -77,11 +77,8 @@ def like(request, pk):
     # 좋아요 추가하고
         review.like_users.add(request.user)
         is_liked = True
-    context = {
-        'is_liked' : is_liked,
-    }
-    # 상세 페이지로 redirect
-    return redirect('articles:detail', pk)
+    context = {'isLiked': is_liked, 'likeCount': review.like_users.count()}
+    return JsonResponse(context)
     
 def search(request):
     search = request.GET.get('search')
