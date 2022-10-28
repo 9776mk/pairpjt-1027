@@ -5,6 +5,7 @@ from .forms import ReviewForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import articles
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -71,9 +72,14 @@ def like(request, pk):
     if request.user in review.like_users.all():
     # 좋아요 삭제
         review.like_users.remove(request.user)
+        is_liked = False
     else:
     # 좋아요 추가하고
         review.like_users.add(request.user)
+        is_liked = True
+    context = {
+        'is_liked' : is_liked,
+    }
     # 상세 페이지로 redirect
     return redirect('articles:detail', pk)
     
